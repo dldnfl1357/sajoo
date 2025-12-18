@@ -115,16 +115,66 @@
 
         // 연예인 매칭 데이터
         const celebrityMatching = {
-            '甲': { name: '송중기', image: 'https://via.placeholder.com/150?text=송중기', reason: '카리스마 있는 리더 타입' },
-            '乙': { name: '아이유', image: 'https://via.placeholder.com/150?text=아이유', reason: '섬세하고 감성적인 타입' },
-            '丙': { name: '박보검', image: 'https://via.placeholder.com/150?text=박보검', reason: '밝고 긍정적인 에너지' },
-            '丁': { name: '박신혜', image: 'https://via.placeholder.com/150?text=박신혜', reason: '따뜻하고 정이 많은 타입' },
-            '戊': { name: '현빈', image: 'https://via.placeholder.com/150?text=현빈', reason: '안정적이고 신뢰감 있는 타입' },
-            '己': { name: '손예진', image: 'https://via.placeholder.com/150?text=손예진', reason: '차분하고 우아한 매력' },
-            '庚': { name: '정우성', image: 'https://via.placeholder.com/150?text=정우성', reason: '의지가 강하고 정직한 타입' },
-            '辛': { name: '김태희', image: 'https://via.placeholder.com/150?text=김태희', reason: '세련되고 품격 있는 미인' },
-            '壬': { name: '공유', image: 'https://via.placeholder.com/150?text=공유', reason: '지적이고 통찰력 있는 타입' },
-            '癸': { name: '수지', image: 'https://via.placeholder.com/150?text=수지', reason: '부드럽고 친근한 매력' }
+            '甲': {
+                name: '송중기',
+                image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+                fallback: 'https://ui-avatars.com/api/?name=송중기&background=3b82f6&color=ffffff&size=150',
+                reason: '카리스마 있는 리더 타입'
+            },
+            '乙': {
+                name: '아이유',
+                image: 'https://images.unsplash.com/photo-1494790108755-2616c30a5a0c?w=150&h=150&fit=crop&crop=face',
+                fallback: 'https://ui-avatars.com/api/?name=아이유&background=ec4899&color=ffffff&size=150',
+                reason: '섬세하고 감성적인 타입'
+            },
+            '丙': {
+                name: '박보검',
+                image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+                fallback: 'https://ui-avatars.com/api/?name=박보검&background=f59e0b&color=ffffff&size=150',
+                reason: '밝고 긍정적인 에너지'
+            },
+            '丁': {
+                name: '박신혜',
+                image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+                fallback: 'https://ui-avatars.com/api/?name=박신혜&background=f97316&color=ffffff&size=150',
+                reason: '따뜻하고 정이 많은 타입'
+            },
+            '戊': {
+                name: '현빈',
+                image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+                fallback: 'https://ui-avatars.com/api/?name=현빈&background=84cc16&color=ffffff&size=150',
+                reason: '안정적이고 신뢰감 있는 타입'
+            },
+            '己': {
+                name: '손예진',
+                image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face',
+                fallback: 'https://ui-avatars.com/api/?name=손예진&background=06b6d4&color=ffffff&size=150',
+                reason: '차분하고 우아한 매력'
+            },
+            '庚': {
+                name: '정우성',
+                image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face',
+                fallback: 'https://ui-avatars.com/api/?name=정우성&background=8b5cf6&color=ffffff&size=150',
+                reason: '의지가 강하고 정직한 타입'
+            },
+            '辛': {
+                name: '김태희',
+                image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face',
+                fallback: 'https://ui-avatars.com/api/?name=김태희&background=ef4444&color=ffffff&size=150',
+                reason: '세련되고 품격 있는 미인'
+            },
+            '壬': {
+                name: '공유',
+                image: 'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=150&h=150&fit=crop&crop=face',
+                fallback: 'https://ui-avatars.com/api/?name=공유&background=10b981&color=ffffff&size=150',
+                reason: '지적이고 통찰력 있는 타입'
+            },
+            '癸': {
+                name: '수지',
+                image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop&crop=face',
+                fallback: 'https://ui-avatars.com/api/?name=수지&background=f472b6&color=ffffff&size=150',
+                reason: '부드럽고 친근한 매력'
+            }
         };
 
         // 메인 컴포넌트
@@ -408,17 +458,61 @@
             };
 
             const handleShare = () => {
-                const text = `${formData.name || '나'}의 사주 결과를 확인해보세요! 🔮\n\n${result.personality.trait} 성격으로, 2025년 종합운세는 ${'★'.repeat(result.fortune.overall)}${'☆'.repeat(5-result.fortune.overall)}입니다.`;
+                // 사주팔자 텍스트 생성
+                const sajuText = Object.entries(result.saju).map(([pillar, data], index) => {
+                    const pillarNames = ['년주', '월주', '일주', '시주'];
+                    return `${pillarNames[index]}: ${data.stem.char}(${data.stem.hangul}) ${data.branch.char}(${data.branch.hangul})`;
+                }).join('\n');
+
+                // 오행 분석 텍스트 생성
+                const elementsText = Object.entries(result.elements)
+                    .map(([element, percentage]) => {
+                        const elementNames = { 木: '목', 火: '화', 土: '토', 金: '금', 水: '수' };
+                        return `${elementNames[element]}: ${percentage}%`;
+                    })
+                    .join(', ');
+
+                const shareText = `🔮 ${formData.name || '나'}의 사주 분석 결과
+
+📜 사주팔자:
+${sajuText}
+
+⬢ 오행 밸런스: ${elementsText}
+
+💫 성격: ${result.personality.trait}
+장점: ${result.personality.strength}
+주의점: ${result.personality.weakness}
+
+📅 2025년 운세 ${'★'.repeat(result.fortune.overall)}${'☆'.repeat(5-result.fortune.overall)}
+💰 재물운: ${result.fortune.money}
+💕 애정운: ${result.fortune.love} (${result.celebrity.name}와 어울림)
+💪 건강운: ${result.fortune.health}
+👔 직장운: ${result.fortune.career}
+
+🔗 사주포춘에서 나도 해보기: https://dldnfl1357.github.io/sajoo`;
 
                 if (navigator.share) {
                     navigator.share({
-                        title: '🔮 사주포춘 결과',
-                        text: text,
-                        url: window.location.href
+                        title: '🔮 사주포춘 - AI 사주 분석 결과',
+                        text: shareText
+                    }).catch(() => {
+                        // 공유 실패 시 클립보드 복사
+                        navigator.clipboard.writeText(shareText);
+                        alert('결과가 클립보드에 복사되었습니다!');
                     });
                 } else {
-                    navigator.clipboard.writeText(text + '\n\n' + window.location.href);
-                    alert('결과가 클립보드에 복사되었습니다!');
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        alert('결과가 클립보드에 복사되었습니다!\n카카오톡이나 다른 앱에 붙여넣기 하세요.');
+                    }).catch(() => {
+                        // 클립보드 복사도 실패한 경우
+                        const textarea = document.createElement('textarea');
+                        textarea.value = shareText;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        alert('결과가 클립보드에 복사되었습니다!');
+                    });
                 }
             };
 
@@ -559,7 +653,7 @@
                                                 alt={result.celebrity.name}
                                                 className="w-16 h-16 rounded-full object-cover border-2 border-pink-200"
                                                 onError={(e) => {
-                                                    e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(result.celebrity.name)}&background=f8bbd9&color=831843&size=64`;
+                                                    e.target.src = result.celebrity.fallback;
                                                 }}
                                             />
                                             <div className="flex-1">
