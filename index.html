@@ -96,6 +96,37 @@
             return percentages;
         }
 
+        // 사주 설명 데이터
+        const sajuExplanations = {
+            pillars: {
+                year: { name: '년주', meaning: '조상과 부모, 성장환경을 나타냅니다' },
+                month: { name: '월주', meaning: '청년기와 직업, 사회생활을 나타냅니다' },
+                day: { name: '일주', meaning: '자신과 배우자, 성격의 핵심을 나타냅니다' },
+                hour: { name: '시주', meaning: '노년과 자녀, 말년운을 나타냅니다' }
+            },
+            elements: {
+                木: { name: '목(木)', meaning: '성장과 발전, 창의력과 유연성을 상징합니다' },
+                火: { name: '화(火)', meaning: '열정과 활력, 리더십과 표현력을 상징합니다' },
+                土: { name: '토(土)', meaning: '안정과 신뢰, 포용력과 현실감을 상징합니다' },
+                金: { name: '금(金)', meaning: '정의와 원칙, 판단력과 의지력을 상징합니다' },
+                水: { name: '수(水)', meaning: '지혜와 적응, 학습능력과 소통력을 상징합니다' }
+            }
+        };
+
+        // 연예인 매칭 데이터
+        const celebrityMatching = {
+            '甲': { name: '송중기', image: 'https://via.placeholder.com/150?text=송중기', reason: '카리스마 있는 리더 타입' },
+            '乙': { name: '아이유', image: 'https://via.placeholder.com/150?text=아이유', reason: '섬세하고 감성적인 타입' },
+            '丙': { name: '박보검', image: 'https://via.placeholder.com/150?text=박보검', reason: '밝고 긍정적인 에너지' },
+            '丁': { name: '박신혜', image: 'https://via.placeholder.com/150?text=박신혜', reason: '따뜻하고 정이 많은 타입' },
+            '戊': { name: '현빈', image: 'https://via.placeholder.com/150?text=현빈', reason: '안정적이고 신뢰감 있는 타입' },
+            '己': { name: '손예진', image: 'https://via.placeholder.com/150?text=손예진', reason: '차분하고 우아한 매력' },
+            '庚': { name: '정우성', image: 'https://via.placeholder.com/150?text=정우성', reason: '의지가 강하고 정직한 타입' },
+            '辛': { name: '김태희', image: 'https://via.placeholder.com/150?text=김태희', reason: '세련되고 품격 있는 미인' },
+            '壬': { name: '공유', image: 'https://via.placeholder.com/150?text=공유', reason: '지적이고 통찰력 있는 타입' },
+            '癸': { name: '수지', image: 'https://via.placeholder.com/150?text=수지', reason: '부드럽고 친근한 매력' }
+        };
+
         // 메인 컴포넌트
         function SajuApp() {
             const [currentView, setCurrentView] = useState('input');
@@ -134,12 +165,14 @@
 
                     const personality = generatePersonality(saju.day.stem);
                     const fortune = generateFortune();
+                    const celebrity = celebrityMatching[saju.day.stem.char];
 
                     setResult({
                         saju,
                         elements,
                         personality,
-                        fortune
+                        fortune,
+                        celebrity
                     });
 
                     setLoading(false);
@@ -406,49 +439,79 @@
                             {/* 사주팔자 */}
                             <div className="p-6">
                                 <h2 className="text-xl font-bold mb-4 text-center">📜 사주팔자</h2>
-                                <div className="grid grid-cols-4 gap-4 mb-8">
-                                    {Object.entries(result.saju).map(([pillar, data], index) => (
-                                        <div key={pillar} className="saju-pillar p-3 text-center">
-                                            <div className="text-xs text-gray-600 mb-1">
-                                                {['년주', '월주', '일주', '시주'][index]}
-                                            </div>
-                                            <div className="text-2xl font-bold text-indigo-800 mb-1">
-                                                {data.stem.char}
-                                            </div>
-                                            <div className="text-sm text-gray-700 mb-2">
-                                                {data.stem.hangul}
-                                            </div>
-                                            <div className="border-t pt-2">
+                                <div className="grid grid-cols-4 gap-4 mb-6">
+                                    {Object.entries(result.saju).map(([pillar, data], index) => {
+                                        const pillarKey = ['year', 'month', 'day', 'hour'][index];
+                                        const explanation = sajuExplanations.pillars[pillarKey];
+                                        return (
+                                            <div key={pillar} className="saju-pillar p-3 text-center group relative">
+                                                <div className="text-xs text-gray-600 mb-1">
+                                                    {explanation.name}
+                                                </div>
                                                 <div className="text-2xl font-bold text-indigo-800 mb-1">
-                                                    {data.branch.char}
+                                                    {data.stem.char}
                                                 </div>
-                                                <div className="text-sm text-gray-700">
-                                                    {data.branch.hangul}
+                                                <div className="text-sm text-gray-700 mb-2">
+                                                    {data.stem.hangul}
+                                                </div>
+                                                <div className="border-t pt-2">
+                                                    <div className="text-2xl font-bold text-indigo-800 mb-1">
+                                                        {data.branch.char}
+                                                    </div>
+                                                    <div className="text-sm text-gray-700">
+                                                        {data.branch.hangul}
+                                                    </div>
+                                                </div>
+                                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none mb-2 whitespace-nowrap">
+                                                    {explanation.meaning}
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
+                                </div>
+
+                                {/* 사주 설명 */}
+                                <div className="bg-blue-50 rounded-lg p-4 mb-8">
+                                    <h3 className="font-semibold text-blue-800 mb-2">📖 사주팔자란?</h3>
+                                    <p className="text-sm text-blue-700">
+                                        태어난 연월일시를 천간과 지지로 표현한 것으로, 각 기둥(주)은 인생의 다른 시기와 영역을 나타냅니다.
+                                        각 기둥에 마우스를 올리면 자세한 설명을 볼 수 있어요!
+                                    </p>
                                 </div>
 
                                 {/* 오행 분석 */}
                                 <h2 className="text-xl font-bold mb-4">⬢ 오행 밸런스</h2>
-                                <div className="space-y-3 mb-8">
+                                <div className="space-y-3 mb-6">
                                     {Object.entries(result.elements).map(([element, percentage]) => (
-                                        <div key={element} className="flex items-center">
+                                        <div key={element} className="flex items-center group">
                                             <div className="w-8 text-sm font-medium">
                                                 {elementNames[element].name}
                                             </div>
-                                            <div className="flex-1 mx-3 bg-gray-200 rounded-full h-6 overflow-hidden">
+                                            <div className="flex-1 mx-3 bg-gray-200 rounded-full h-6 overflow-hidden relative">
                                                 <div
                                                     className={`element-bar h-full ${elementNames[element].color}`}
                                                     style={{width: `${percentage}%`}}
                                                 ></div>
+                                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <div className="bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                                                        {sajuExplanations.elements[element].meaning}
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div className="w-12 text-sm font-medium">
                                                 {percentage}%
                                             </div>
                                         </div>
                                     ))}
+                                </div>
+
+                                {/* 오행 설명 */}
+                                <div className="bg-green-50 rounded-lg p-4 mb-8">
+                                    <h3 className="font-semibold text-green-800 mb-2">🌿 오행이란?</h3>
+                                    <p className="text-sm text-green-700">
+                                        목(木), 화(火), 토(土), 금(金), 수(水) 다섯 가지 기운으로 세상의 모든 것을 설명하는 이론입니다.
+                                        각 오행에 마우스를 올리면 의미를 확인할 수 있어요!
+                                    </p>
                                 </div>
 
                                 {/* 성격 분석 */}
@@ -478,11 +541,92 @@
                                         </div>
                                         <div className="font-semibold text-gray-800">종합운세</div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4 text-sm">
+                                    <div className="grid grid-cols-2 gap-4 text-sm mb-4">
                                         <div>💰 <span className="font-medium">재물운:</span> {result.fortune.money}</div>
-                                        <div>💕 <span className="font-medium">애정운:</span> {result.fortune.love}</div>
                                         <div>💪 <span className="font-medium">건강운:</span> {result.fortune.health}</div>
                                         <div>👔 <span className="font-medium">직장운:</span> {result.fortune.career}</div>
+                                    </div>
+
+                                    {/* 애정운 - 연예인 매칭 */}
+                                    <div className="bg-pink-50 rounded-lg p-4">
+                                        <div className="flex items-center justify-between mb-3">
+                                            <span className="font-medium">💕 애정운:</span>
+                                            <span className="text-sm text-pink-600">당신과 어울리는 연예인</span>
+                                        </div>
+                                        <div className="flex items-center space-x-4">
+                                            <img
+                                                src={result.celebrity.image}
+                                                alt={result.celebrity.name}
+                                                className="w-16 h-16 rounded-full object-cover border-2 border-pink-200"
+                                                onError={(e) => {
+                                                    e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(result.celebrity.name)}&background=f8bbd9&color=831843&size=64`;
+                                                }}
+                                            />
+                                            <div className="flex-1">
+                                                <div className="font-semibold text-pink-800">{result.celebrity.name}</div>
+                                                <div className="text-sm text-pink-600">{result.celebrity.reason}</div>
+                                                <div className="text-xs text-pink-500 mt-1">{result.fortune.love}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* 사주 전문가 매칭 플랫폼 */}
+                                <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 mb-8 border border-amber-200">
+                                    <div className="text-center mb-4">
+                                        <h3 className="text-lg font-bold text-amber-800 mb-2">🔮 전문가 상담 받기</h3>
+                                        <p className="text-sm text-amber-700">
+                                            더 정확하고 자세한 사주 해석을 원하시나요?<br/>
+                                            검증된 사주 전문가들과 1:1 상담을 받아보세요!
+                                        </p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                        <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                                            <div className="text-2xl mb-2">👨‍🏫</div>
+                                            <div className="font-semibold text-gray-800 text-sm">경력 10년+</div>
+                                            <div className="text-xs text-gray-600">전문가 50명</div>
+                                        </div>
+                                        <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                                            <div className="text-2xl mb-2">💬</div>
+                                            <div className="font-semibold text-gray-800 text-sm">실시간 상담</div>
+                                            <div className="text-xs text-gray-600">24시간 예약</div>
+                                        </div>
+                                        <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                                            <div className="text-2xl mb-2">⭐</div>
+                                            <div className="font-semibold text-gray-800 text-sm">평점 4.8+</div>
+                                            <div className="text-xs text-gray-600">만족도 98%</div>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2 mb-4">
+                                        <div className="flex items-center text-sm text-amber-700">
+                                            <span className="mr-2">✅</span>
+                                            <span>개인별 맞춤 상담 (30분 ~ 60분)</span>
+                                        </div>
+                                        <div className="flex items-center text-sm text-amber-700">
+                                            <span className="mr-2">✅</span>
+                                            <span>궁합, 직업운, 건강운 등 분야별 전문가</span>
+                                        </div>
+                                        <div className="flex items-center text-sm text-amber-700">
+                                            <span className="mr-2">✅</span>
+                                            <span>음성/화상/채팅 상담 선택 가능</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex space-x-3">
+                                        <button className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-amber-600 hover:to-orange-700 transition-all duration-200 text-sm">
+                                            전문가 상담 신청
+                                        </button>
+                                        <button className="px-4 bg-white border border-amber-300 text-amber-700 py-3 rounded-lg font-semibold hover:bg-amber-50 transition-all duration-200 text-sm">
+                                            상담료 확인
+                                        </button>
+                                    </div>
+
+                                    <div className="text-center mt-3">
+                                        <span className="text-xs text-amber-600">
+                                            💰 첫 상담 50% 할인 이벤트 진행 중!
+                                        </span>
                                     </div>
                                 </div>
 
